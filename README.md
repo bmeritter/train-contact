@@ -7,3 +7,5 @@
 - Save data to android(To do)
 - Load data from ios(To do)
 - Save data to ios(To do)
+- Use redux(Finished)
+- Write log middleware(Finished)
