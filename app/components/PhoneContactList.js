@@ -4,6 +4,8 @@ import { Actions } from 'react-native-router-flux';
 import Avatar from "./Avatar";
 
 import { NativeModules } from 'react-native';
+import { connect } from 'react-redux';
+import { loadContacts } from "../actions/loadContacts";
 
 const PhoneContact = NativeModules.PhoneContact;
 
@@ -48,25 +50,22 @@ const styles = StyleSheet.create({
     }
 });
 
-export default class PhoneContactList extends Component {
+class PhoneContactList extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            contacts: [],
-        };
     }
 
     componentDidMount() {
-        PhoneContact.show().then((contacts) => this.setState({contacts}));
+        PhoneContact.show().then((contacts) => this.props.loadContacts(contacts));
     }
 
     keyExtractor = (item, index) => index;
 
     renderItem = ({item}) => {
         return (
-            <TouchableOpacity style={styles.contact} onPress={() => Actions.contactDetail({contact: item})}>
-                <Avatar family={item.family}/>
-                <Text>{item.name}</Text>
+            <TouchableOpacity style={styles.contact} onPress={() => Actions.contactDetail()}>
+                <Avatar family={item.fullName}/>
+                <Text>{item.fullName}</Text>
                 <Text>{item.phone}</Text>
             </TouchableOpacity>
         );
@@ -77,11 +76,11 @@ export default class PhoneContactList extends Component {
     }
 
     render() {
-
+        const contacts = this.props.contacts || [];
         return (
             <View style={styles.container}>
                 <FlatList
-                    data={this.state.contacts}
+                    data={contacts}
                     keyExtractor={this.keyExtractor}
                     renderItem={this.renderItem}
                     ItemSeparatorComponent={this.SeparatorComponent}
@@ -90,3 +89,15 @@ export default class PhoneContactList extends Component {
         );
     }
 }
+
+const mapStateToProps = state => ({contacts: state.contacts});
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        loadContacts: (contacts) => {
+            dispatch(loadContacts(contacts));
+        }
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PhoneContactList);
