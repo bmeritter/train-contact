@@ -5,7 +5,7 @@ import Avatar from "./Avatar";
 
 import { NativeModules } from 'react-native';
 import { connect } from 'react-redux';
-import { loadContacts } from "../actions/loadContacts";
+import { loadContacts, updateCurrentIndex } from "../actions/loadContacts";
 
 const PhoneContact = NativeModules.PhoneContact;
 
@@ -59,11 +59,16 @@ class PhoneContactList extends Component {
         PhoneContact.show().then((contacts) => this.props.loadContacts(contacts));
     }
 
+    handleOnPress = (item, index) => {
+        this.props.updateCurrentIndex(index)
+        Actions.contactDetail({contact: item});
+    }
+
     keyExtractor = (item, index) => index;
 
-    renderItem = ({item}) => {
+    renderItem = ({item, index}) => {
         return (
-            <TouchableOpacity style={styles.contact} onPress={() => Actions.contactDetail({contact: item})}>
+            <TouchableOpacity style={styles.contact} onPress={() => this.handleOnPress(item, index)}>
                 <Avatar family={item.fullName}/>
                 <Text>{item.fullName}</Text>
                 <Text>{item.phone}</Text>
@@ -96,6 +101,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         loadContacts: (contacts) => {
             dispatch(loadContacts(contacts));
+        },
+        updateCurrentIndex: (index) => {
+            dispatch(updateCurrentIndex(index));
         }
     };
 };

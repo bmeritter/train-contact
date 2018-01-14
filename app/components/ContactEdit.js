@@ -1,44 +1,47 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, TextInput } from "react-native";
-import Avatar from "./Avatar";
+import { connect } from "react-redux";
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
     text: {
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
-        height: 50,
     }
 });
 
-export default class ContactEdit extends Component {
+class ContactEdit extends Component {
 
     render() {
-        console.log('=========',this.props)
-        // const contact = this.props.contact;
+        const contacts = this.props.contacts || [];
+        const index = this.props.currentIndex || 0;
         return (
-            <View style={styles.container}>
+            <View>
                 <View style={styles.text}>
-                    {/*<Avatar family={'werwe'}/>*/}
                     <View>
                         <Text>姓</Text>
-                        <TextInput value={'skfsdffff'} />
+                        <TextInput value={contacts[index].fullName}/>
                     </View>
                     <View>
                         <Text>名</Text>
-                        <TextInput></TextInput>
+                        <TextInput value={contacts[index].fullName}></TextInput>
                     </View>
                 </View>
 
                 <View style={styles.text}>
                     <Text>电话</Text>
-                    <Text>{'erwe'}</Text>
+                    <Text>{contacts[index].phone}</Text>
                 </View>
 
             </View>
         )
     }
 }
+
+
+const mapStateToProps = state => ({
+    contacts: state.contacts,
+    currentIndex: state.currentIndex
+});
+
+export default connect(mapStateToProps)(ContactEdit);
