@@ -63,7 +63,7 @@ class PhoneContactList extends Component {
 
     renderItem = ({item}) => {
         return (
-            <TouchableOpacity style={styles.contact} onPress={() => Actions.contactDetail()}>
+            <TouchableOpacity style={styles.contact} onPress={() => Actions.contactDetail({contact: item})}>
                 <Avatar family={item.fullName}/>
                 <Text>{item.fullName}</Text>
                 <Text>{item.phone}</Text>

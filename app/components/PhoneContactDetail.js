@@ -29,18 +29,18 @@ export default class PhoneContactDetail extends Component {
     }
 
     render() {
-        const contact = this.props.contact;
+        const contact = this.props.contact ;
         return (
             <View style={styles.container}>
                 <View style={styles.text}>
-                    <Avatar family={contact.family}/>
+                    <Avatar family={contact.fullName}/>
                     <View>
                         <Text>姓</Text>
-                        <Text>{contact.family}</Text>
+                        <Text>{contact.fullName}</Text>
                     </View>
                     <View>
                         <Text>名</Text>
-                        <Text>{contact.name}</Text>
+                        <Text>{contact.fullName}</Text>
                     </View>
                 </View>
 
